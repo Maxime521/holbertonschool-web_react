@@ -1,22 +1,45 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen, within } from '@testing-library/react'
+import App from './App.jsx'
 
-test('renders School Dashboard h1', () => {
-    render(<App />);
-    const h1 = screen.getByText('School Dashboard');
-    expect(h1).toBeInTheDocument();
-});
+describe('App', () => {
+  beforeEach(() => {
+    render(<App />)
+  })
 
-test('renders correct text content p elements app-body and app-footer', () => {
-    render(<App />);
-    const Body_p = screen.getByText('Login to access the full dashboard');
-    expect(Body_p).toBeInTheDocument();
-    const Footer_p = screen.getByText(/Copyright 2026 - holberton School/i);
-    expect(Footer_p).toBeInTheDocument();
-});
+  test('renders h1 with text School Dashboard', () => {
+    expect(
+      screen.getByRole('heading', { name: /school dashboard/i }),
+    ).toBeInTheDocument()
+  })
 
-test('renders img is element', () => {
-    render(<App />);
-    const img = screen.getByRole('img');
-    expect(img).toBeInTheDocument();
-});
+  test('body and footer paragraphs match the dashboard copy', () => {
+    const body = document.querySelector('.App-body')
+    const footer = document.querySelector('.App-footer')
+    expect(
+      within(body).getByText(/login to access the full dashboard/i),
+    ).toBeInTheDocument()
+    const year = new Date().getFullYear()
+    expect(
+      within(footer).getByText(
+        new RegExp(
+          `copyright\\s*${year}\\s+holberton school main dashboard`,
+          'i',
+        ),
+      ),
+    ).toBeInTheDocument()
+  })
+
+  test('renders the holberton logo image', () => {
+    expect(
+      screen.getByRole('img', { name: /holberton logo/i }),
+    ).toBeInTheDocument()
+  })
+
+  test('renders notifications inside root-notifications', () => {
+    const wrap = document.querySelector('.root-notifications')
+    expect(wrap).toBeInTheDocument()
+    expect(
+      within(wrap).getByText(/here is the list of notifications/i),
+    ).toBeInTheDocument()
+  })
+})

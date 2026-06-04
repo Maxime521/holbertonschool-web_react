@@ -1,8 +1,7 @@
 .notification-items {
-    font-family: sans-serif
+  border: #e1003c dotted 2.5px;
 }
 
-.root-notification {
-    border: red dotted 3px;
-    padding: 0 1 rem;
+.notification-items p {
+  margin-left: 1rem;
 }
